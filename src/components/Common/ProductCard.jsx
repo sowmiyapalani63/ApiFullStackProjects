@@ -4,15 +4,18 @@ import{ CgAlarm } from "react-icons/cg";
 export const ProductCard = ({ coverImage, department, title, description, totalSales, originalPrice, salePrice, duration, lessons, progress, rating, SaleOn }) => {
     return (
         <div className="card card-custom border-0">
+            <div className="card-header p-0">
             <div className="specilation-card-img">
                 <img src={require (`../../Assests/images/${coverImage}`)} className="card-img-top position-realtive" alt={coverImage} />
                 <span className="badge bg-danger position-absolute specilation-card-badge">{SaleOn}</span>
                 <div className="custom-icons d-flex gap-3 text-center">
                     <i className="bi bi-heart p-2 bg-white text-dark rounded-circle"></i>
                     <i className="bi bi-cart p-2 bg-white text-dark rounded-circle"></i>
-                    <i className="bi bi-share p-2 bg-white text-dark rounded-circle"></i>
+                    <i className="bi bi-eye-fill p-2 bg-white text-dark rounded-circle"></i>
                 </div>
             </div>
+            </div>
+            
             <div className="card-body d-flex flex-column gap-1 pt-2">
                 <span className="d-flex justify-content-between align-items-center">
                     <span className="primary-color font-14 fw-bold responsive-font">{department}</span>

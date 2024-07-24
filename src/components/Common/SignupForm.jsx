@@ -2,17 +2,17 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button, Form, InputGroup } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../../featrues/userAuthSlice';
+import { signupUser } from '../../featrues/userAuthSlice';
 
-const LoginFormPopup = ({ show, handleClose, toggleSignup }) => {
+const SignupFormPopup = ({ show, handleClose }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [usernameError, setUsernameError] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  const [loginError, setLoginError] = useState('');
+  const [signupError, setSignupError] = useState('');
 
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.auth);
+  const { loading, error } = useSelector(state => state.auth);
 
   const validateForm = () => {
     let valid = true;
@@ -49,11 +49,10 @@ const LoginFormPopup = ({ show, handleClose, toggleSignup }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setLoginError('');
+    setSignupError('');
 
     if (validateForm()) {
-      dispatch(loginUser({ username, password }));
-      // console.log( `username ,password ${username},${password}`)
+      dispatch(signupUser({ username, password }));
     }
   };
 
@@ -62,10 +61,10 @@ const LoginFormPopup = ({ show, handleClose, toggleSignup }) => {
       <Modal.Body className="d-flex gap-2 flex-column">
         <Button variant="close" aria-label="Close" onClick={handleClose} className="align-self-end"></Button>
         <div className="myform p-5">
-          <h6 className="text-center fw-bold font-16 primary-color">Login Form</h6>
+          <h6 className="text-center fw-bold font-16 primary-color">Signup Form</h6>
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="Username" className="mb-3">
-              <Form.Label className="font-14">Username</Form.Label>
+              <Form.Label className="font-14">Enter your name</Form.Label>
               <InputGroup hasValidation>
                 <Form.Control
                   type="text"
@@ -81,12 +80,12 @@ const LoginFormPopup = ({ show, handleClose, toggleSignup }) => {
               </InputGroup>
             </Form.Group>
             <Form.Group controlId="password" className="mb-3">
-              <Form.Label className="font-14">Password</Form.Label>
+              <Form.Label className="font-14">Create your Password</Form.Label>
               <InputGroup hasValidation>
                 <Form.Control
                   type="password"
                   name="password"
-                  placeholder="Enter your password"
+                  placeholder="Create your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   isInvalid={!!passwordError}
@@ -103,24 +102,19 @@ const LoginFormPopup = ({ show, handleClose, toggleSignup }) => {
               type="submit"
               disabled={loading}
             >
-              Login
+              Signup
             </Button>
-            {loginError && <div className="alert alert-danger mt-2">{loginError}</div>}
+            {signupError && <div className="alert alert-danger mt-2">{signupError}</div>}
           </Form>
-          <p className='font-14 font-10'>
-            Don't have an account?{' '}
-            <span onClick={toggleSignup} className='text-primary signinpopup'>Sign Up</span> here
-          </p>
         </div>
       </Modal.Body>
     </Modal>
   );
 };
 
-LoginFormPopup.propTypes = {
+SignupFormPopup.propTypes = {
   show: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  toggleSignup: PropTypes.func.isRequired,
 };
 
-export default LoginFormPopup;
+export default SignupFormPopup;

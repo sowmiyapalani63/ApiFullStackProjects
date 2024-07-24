@@ -55,7 +55,9 @@ body {
 .px-198 {
   padding-right: 198px;
 }
-
+.login-msg-text{
+  padding-top:8px ;
+}
 .lh-24 {
   line-height: 24px;
   letter-spacing: 0.2px;
@@ -195,6 +197,7 @@ width: 65%;
   left: 20px;
   top:20px;
 }
+
 .badge-new {
   top: -50px;
   right: 0px;
@@ -217,6 +220,12 @@ width: 65%;
   height: 100vh;
   z-index: 9999;
   
+}
+.testimonial-btn{
+  justify-content: space-evenly !important;
+}
+.testimonial-btn button {
+  min-width: fit-content;
 }
 .spinner-border{
   height: 60px;
@@ -339,4 +348,23 @@ width: 65%;
   .Lm-analyticsDashboard{
     top: 208px;
   }
+}
+@media only screen and (min-width: 2560px) {
+  .hero-container {
+    margin-right: auto !important;
+    padding-right: inherit !important;
+}
+  .hero-container .row {
+      margin-right: auto !important;
+      padding-right: inherit !important;
+  }
+}
+
+@media (max-width: 991px) {
+  .user-actions .user-responsive-div {
+    flex-direction: column;
+    align-items: flex-start;
+    
+  }
+  
 }

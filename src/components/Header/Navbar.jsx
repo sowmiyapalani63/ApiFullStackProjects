@@ -1,20 +1,49 @@
-import React from 'react';
-import { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import Offcanvas from 'react-bootstrap/Offcanvas';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Button, Container, Form, Nav, Navbar, Offcanvas } from 'react-bootstrap';
 import LoginFormPopup from '../Common/LoginForm';
-export const CustomNavbar = () => {
-  const [showModal, setShowModal] = useState(false);
+import SignupFormPopup from '../Common/SignupForm';
+import { logoutUser } from '../../featrues/userAuthSlice';
 
-  const handleShow = () => setShowModal(true);
-  const handleClose = () => setShowModal(false);
+export const CustomNavbar = () => {
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showSignupModal, setShowSignupModal] = useState(false);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+ 
+  useEffect(() => {
+    console.log('User state changed:', user);
+    if (user) {
+      setShowLoginModal(false);
+      setShowSignupModal(false);
+    }
+  }, [user]);
+
+  const handleShowLogin = () => {
+    setShowSignupModal(false);
+    setShowLoginModal(true);
+  };
+
+  const handleShowSignup = () => {
+    setShowLoginModal(false);
+    setShowSignupModal(true);
+  };
+
+  const handleClose = () => {
+    setShowLoginModal(false);
+    setShowSignupModal(false);
+  };
+
+  const handleLogout = () => {
+    if (user) {
+      dispatch(logoutUser(user.username));
+      // console.log(`logut req username ${user.username}`)
+    }
+  };
+
   return (
     <>
-      {["lg",].map((expand) => (
+      {["lg"].map((expand) => (
         <Navbar key={expand} expand={expand} className="navbar-light flex-nowrap custom-navbar">
           <Container fluid>
             <Navbar.Brand href="#home" className='padding-l-136 pl-6'>
@@ -36,24 +65,40 @@ export const CustomNavbar = () => {
                   <Nav.Link href="#pricing" className='text-muted font-14 fw-bold responsive-font'>Pricing</Nav.Link>
                   <Nav.Link href="#contact" className='text-muted font-14 fw-bold responsive-font'>Contact</Nav.Link>
                 </Nav>
-                <div className="d-flex gap-3 ms-auto flex-md-direction">
+                
+                <div className="user-actions ms-auto d-flex align-items-center gap-3">
                   <Form className="d-flex gap-3">
-                    <Button variant="outline-none" className='primary-color font-14 fw-bold responsive-font'>Login</Button>
+                    {user ? (
+                      <div className='d-flex align-items-center flex-lg-row gap-3'>
+                        <Button variant="" className='primary-background-color responsive-font pl-1' onClick={handleLogout}>
+                          <span className='text-white font-14 fw-bold'>LogOut</span>
+                        </Button>
+                        <span className="primary-color font-14 fw-bold responsive-font login-msg-text hi-username">Hi {user.username}</span>
+                      </div>
+                    ) : (
+                      <Button variant="outline-none" className='primary-color font-14 fw-bold responsive-font' onClick={handleShowLogin}>
+                        Login
+                      </Button>
+                    )}
                   </Form>
-                 
-                  <Form className='padding-r-143 padding-0'>
-                    <Button variant="" className='primary-background-color responsive-font pl-1 'onClick={handleShow}>
-                      <span className='text-white font-14 fw-bold'>Join US</span>
-                      <i className="bi bi-arrow-right text-white"></i>
-                    </Button>
-                    <LoginFormPopup show={showModal} handleClose={handleClose} />
-                  </Form>
+                  {!user && (
+                    <Form className='padding-r-143 padding-0 d-flex align-item-baseline'>
+                      <Button variant="" className='primary-background-color responsive-font pl-1' onClick={handleShowSignup}>
+                        <span className='text-white font-14 fw-bold'>Join US</span>
+                        <i className="bi bi-arrow-right text-white"></i>
+                      </Button>
+                    </Form>
+                  )}
                 </div>
               </Offcanvas.Body>
             </Navbar.Offcanvas>
           </Container>
         </Navbar>
       ))}
+      <LoginFormPopup show={showLoginModal} handleClose={handleClose} toggleSignup={handleShowSignup} />
+      <SignupFormPopup show={showSignupModal} handleClose={handleClose} />
     </>
   );
-}
+};
+
+export default CustomNavbar;
